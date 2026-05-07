@@ -1,5 +1,3 @@
-import React from 'react';
-
 export default function DateSeparator({ label }: { label: string }) {
   return (
     <div className="flex items-center justify-center my-2">

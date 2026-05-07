@@ -17,7 +17,11 @@ export default function RootPage() {
     (async () => {
       try {
         const res = await fetch(`/api/proxy?path=${encodeURIComponent('/auth/me')}`);
-        if (!res.ok) { setReady(true); return; }
+        if (!res.ok) { 
+          dispatch({ type: 'SET_USER', user: null }); 
+          setReady(true);
+          return;
+        }
 
         const me = await res.json() as User;
         const user: User = { ...me, id: me.id ?? me.user_id ?? null };
@@ -39,10 +43,6 @@ export default function RootPage() {
       }
     })();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
-
-  useEffect(() => {
-    if (state.user) router.push('/chat');
-  }, [state.user]); // eslint-disable-line react-hooks/exhaustive-deps
 
   if (!ready && !state.user) {
     return (

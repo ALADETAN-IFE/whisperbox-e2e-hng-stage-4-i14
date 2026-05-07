@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Search, Plus, LogOut, PanelLeft } from "lucide-react";
+import { Search, Plus, LogOut, PanelLeft, X } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { useAppState } from "@/hooks/useAppState";
 import { showToast } from "./Toast";
@@ -97,15 +97,24 @@ export default function Sidebar({
   }
 
   return (
-    <div className="w-[320px] min-w-[320px] bg-[#1c1c1c] border-r border-white/8 flex flex-col h-full">
-      <div className="flex items-center gap-2 px-3 py-2">
-        <button
-          onClick={onToggleCollapse}
-          title="Close sidebar"
-          className="w-8 h-8 flex items-center justify-center rounded-full text-[#707579] hover:text-white hover:bg-white/8 transition-colors shrink-0"
-        >
-          <PanelLeft size={17} />
-        </button>
+    <>
+      <div className="hidden max-md:fixed max-md:inset-0 max-md:bg-black/50 max-md:z-30" onClick={onToggleCollapse} />
+      <div className="w-[320px] min-w-[320px] bg-[#1c1c1c] border-r border-white/8 flex flex-col h-full max-md:fixed max-md:w-full max-md:z-40">
+        <div className="flex items-center gap-2 px-3 py-2">
+          <button
+            onClick={onToggleCollapse}
+            title="Close sidebar"
+            className="w-8 h-8 flex items-center justify-center rounded-full text-[#707579] hover:text-white hover:bg-white/8 transition-colors shrink-0 max-md:hidden"
+          >
+            <PanelLeft size={17} />
+          </button>
+          <button
+            onClick={onToggleCollapse}
+            title="Close sidebar"
+            className="hidden max-md:flex w-8 h-8 items-center justify-center rounded-full text-[#707579] hover:text-white hover:bg-white/8 transition-colors shrink-0"
+          >
+            <X size={17} />
+          </button>
 
         <div className="flex-1 flex items-center gap-2 bg-[#0f0f0f] rounded-full px-3 py-1.5">
           <Search size={15} className="text-[#707579] shrink-0" />
@@ -181,7 +190,8 @@ export default function Sidebar({
           </button>
         </div>
       </div>
-    </div>
+      </div>
+    </>
   );
 }
 

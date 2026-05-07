@@ -10,12 +10,12 @@ import {
 } from "react";
 import { useRouter } from "next/navigation";
 import {
-  RefreshCw,
   SendHorizonal,
   Lock,
   Loader2,
-  Paperclip,
-  Smile,
+  ArrowLeft,
+  // Paperclip,
+  // Smile,
 } from "lucide-react";
 import { useAppState } from "@/hooks/useAppState";
 import { showToast } from "./Toast";
@@ -325,9 +325,9 @@ export default function ChatArea() {
     return (
       <div className="flex-1 flex items-center justify-center bg-[#0e1621] relative">
         <div
-          className="absolute inset-0 opacity-[0.03]"
+          className="absolute inset-0 opacity-[0.1] bg-cover bg-center"
           style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M10 10l5 5m10-5l-5 5m30 0l5 5m10-5l-5 5m-50 40l5 5m10-5l-5 5m30 0l5 5m10-5l-5 5' stroke='%23ffffff' stroke-width='0.5' fill='none'/%3E%3C/svg%3E")`,
+            backgroundImage: `url(/bg.jpg)`,
           }}
         />
         <div className="bg-black/30 px-4 py-2 rounded-full text-sm text-white relative z-10">
@@ -356,14 +356,23 @@ export default function ChatArea() {
   return (
     <div className="flex-1 flex flex-col bg-[#0e1621] relative">
       <div
-        className="absolute inset-0 pointer-events-none opacity-[0.03]"
+        className="absolute inset-0 pointer-events-none opacity-[0.1] bg-cover bg-center"
         style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M10 10l5 5m10-5l-5 5m30 0l5 5m10-5l-5 5m-50 40l5 5m10-5l-5 5m30 0l5 5m10-5l-5 5' stroke='%23ffffff' stroke-width='0.5' fill='none'/%3E%3C/svg%3E")`,
+          backgroundImage: `url(/bg.jpg)`,
         }}
       />
 
       <div className="h-14 bg-[#1c1c1c] border-b border-white/8 flex items-center justify-between px-4 z-10 shrink-0">
         <div className="flex items-center gap-3">
+          <button
+            onClick={() => {
+              dispatch({ type: "SET_ACTIVE_CONVO", peerId: null, peer: null });
+              router.push("/chat");
+            }}
+            className="md:hidden text-[#707579] hover:text-white transition-colors p-1"
+          >
+            <ArrowLeft size={20} />
+          </button>
           <div className="w-9 h-9 rounded-full bg-[#2b5278] flex items-center justify-center text-sm font-semibold">
             {initial}
           </div>
@@ -374,12 +383,6 @@ export default function ChatArea() {
             </div>
           </div>
         </div>
-        <button
-          onClick={() => loadMessages(false)}
-          className="text-[#707579] hover:text-white transition-colors p-1"
-        >
-          <RefreshCw size={16} />
-        </button>
       </div>
 
       <div
@@ -415,7 +418,7 @@ export default function ChatArea() {
       <div className="px-4 pb-5 pt-2.5 z-10 shrink-0">
         <div className="bg-[#1c1c1c] rounded-xl flex items-end gap-3 px-3 py-2">
           <button className="text-[#707579] hover:text-white transition-colors p-1 shrink-0">
-            <Paperclip size={22} />
+            {/* <Paperclip size={22} /> */}
           </button>
           <textarea
             ref={textareaRef}
@@ -426,9 +429,9 @@ export default function ChatArea() {
             onKeyDown={handleKey}
             className="flex-1 bg-transparent border-none outline-none text-white text-[15px] resize-none max-h-50 py-1 placeholder:text-[#707579]"
           />
-          <button className="text-[#707579] hover:text-white transition-colors p-1 shrink-0">
+          {/* <button className="text-[#707579] hover:text-white transition-colors p-1 shrink-0">
             <Smile size={22} />
-          </button>
+          </button> */}
           <button
             onClick={sendMessage}
             disabled={!inputText.trim() || sending}

@@ -15,7 +15,6 @@ export interface Conversation {
   display_name?: string;
   last_message_at?: string;
   public_key?: string;
-  // Presence fields from API / WebSocket
   online?: boolean;
   last_seen?: string;
   last_active?: string;
@@ -59,7 +58,6 @@ export interface AppState {
   db: IDBDatabase | null;
 }
 
-// Extend User with presence field used in Sidebar footer
 export interface AuthenticatedUser extends User {
   online?: boolean;
 }

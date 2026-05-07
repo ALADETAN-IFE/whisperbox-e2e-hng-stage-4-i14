@@ -7,7 +7,7 @@ export async function POST() {
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'strict',
     path: '/',
-    maxAge: 0, // immediately expire
+    maxAge: 0,
   });
   return res;
 }

@@ -49,7 +49,7 @@ export default function Sidebar({
   const userName = currentUser?.display_name || currentUser?.username || "?";
   const initial = userName[0]?.toUpperCase() ?? "?";
 
-  // Collapsed state: just show a thin bar with the toggle button
+  
   if (collapsed) {
     return (
       <div className="w-13 min-w-13 bg-[#1c1c1c] border-r border-white/8 flex flex-col h-full items-center py-3 gap-3">
@@ -61,7 +61,7 @@ export default function Sidebar({
           <PanelLeft size={18} />
         </button>
 
-        {/* Mini avatar list when collapsed */}
+        
         <div className="flex-1 flex flex-col gap-2 overflow-y-auto w-full items-center pt-1">
           {filtered.map((c) => {
             const name = c.display_name || c.username || "?";
@@ -98,9 +98,7 @@ export default function Sidebar({
 
   return (
     <div className="w-[320px] min-w-[320px] bg-[#1c1c1c] border-r border-white/8 flex flex-col h-full">
-      {/* Header */}
       <div className="flex items-center gap-2 px-3 py-2">
-        {/* Collapse toggle */}
         <button
           onClick={onToggleCollapse}
           title="Close sidebar"
@@ -127,7 +125,7 @@ export default function Sidebar({
         </button>
       </div>
 
-      {/* Tabs */}
+      
       <div className="flex gap-5 px-4 pb-0.5 border-b border-white/8">
         {["All", "Private", "Groups"].map((t) => (
           <button
@@ -143,7 +141,7 @@ export default function Sidebar({
         ))}
       </div>
 
-      {/* Conversation list */}
+      
       <div className="flex-1 overflow-y-auto">
         {!filtered.length ? (
           <div className="py-10 text-center text-sm text-[#707579]">
@@ -162,7 +160,6 @@ export default function Sidebar({
         )}
       </div>
 
-      {/* User footer */}
       <div className="p-3 border-t border-white/8">
         <div className="flex items-center gap-2.5 bg-white/5 px-3 py-2 rounded-xl">
           <div className="relative">

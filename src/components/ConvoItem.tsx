@@ -39,7 +39,7 @@ export default function ConvoItem({ convo, isActive, preview, onClick }: ConvoIt
         </div>
       </div>
       {time && (
-        <div className={`text-[12px] shrink-0 ${isActive ? 'text-white' : 'text-[#707579]'}`}>
+        <div className={`text-[12px] self-end mb-1 shrink-0 ${isActive ? 'text-white' : 'text-[#707579]'}`}>
           {time}
         </div>
       )}

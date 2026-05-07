@@ -1,16 +1,17 @@
 @import "tailwindcss";
 
 :root {
-  --font-inter: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-inter:
+    "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
-html, body {
+html,
+body {
   height: 100%;
   font-family: var(--font-inter);
   -webkit-font-smoothing: antialiased;
 }
 
-/* Autofill override */
 input:-webkit-autofill,
 input:-webkit-autofill:focus {
   -webkit-text-fill-color: white;
@@ -18,17 +19,33 @@ input:-webkit-autofill:focus {
   transition: background-color 5000s ease-in-out 0s;
 }
 
-/* Scrollbar */
-::-webkit-scrollbar { width: 5px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
+::-webkit-scrollbar {
+  width: 5px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
 
 @keyframes slide-down {
-  from { opacity: 0; transform: translateY(-8px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
-.animate-slide-down { animation: slide-down 0.25s ease; }
+.animate-slide-down {
+  animation: slide-down 0.25s ease;
+}
 
 button {
   cursor: pointer;

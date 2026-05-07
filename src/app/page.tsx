@@ -26,15 +26,13 @@ export default function RootPage() {
         const db = await openKeyDB();
         dispatch({ type: 'SET_DB', db });
 
-        // Try to load private key from IndexedDB
         const privateKey = await loadPrivateKey(db, user.username);
         let publicKey = null;
         if (user.public_key) {
-          try { publicKey = await importPublicKey(user.public_key); } catch { /* ok */ }
+          try { publicKey = await importPublicKey(user.public_key); } catch {}
         }
         dispatch({ type: 'SET_KEYS', privateKey, publicKey });
 
-        // Redirect to chat — if privateKey is null, ChatLayout will handle the missing-key state
         router.replace('/chat');
       } catch {
         setReady(true);
@@ -42,7 +40,6 @@ export default function RootPage() {
     })();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // After login via AuthScreen, user is set in state — redirect
   useEffect(() => {
     if (state.user) router.push('/chat');
   }, [state.user]); // eslint-disable-line react-hooks/exhaustive-deps

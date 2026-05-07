@@ -28,7 +28,7 @@ export function useAuthRestore(
           if (privateKey) {
             let publicKey = state.publicKey;
             if (!publicKey && state.user!.public_key) {
-              try { publicKey = await importPublicKey(state.user!.public_key); } catch { /* ok */ }
+              try { publicKey = await importPublicKey(state.user!.public_key); } catch {}
             }
             dispatch({ type: 'SET_KEYS', privateKey, publicKey });
           } else if (state.user!.wrapped_private_key) {
@@ -50,7 +50,7 @@ export function useAuthRestore(
           handleExpiredSession(router);
           return;
         }
-        if (!res.ok) return; // transient server error — stay on current page
+        if (!res.ok) return;
 
         const me = await res.json() as User;
         const user: User = { ...me, id: me.id ?? me.user_id ?? null };
@@ -62,7 +62,7 @@ export function useAuthRestore(
         const privateKey = await loadPrivateKey(db, user.username);
         let publicKey = null;
         if (user.public_key) {
-          try { publicKey = await importPublicKey(user.public_key); } catch { /* ok */ }
+          try { publicKey = await importPublicKey(user.public_key); } catch {}
         }
 
         if (privateKey) {
@@ -76,9 +76,7 @@ export function useAuthRestore(
           router.replace('/');
         }
       } catch {
-        // Transient network error (e.g. HMR reload, brief offline) — do NOT redirect.
-        // Only 401/403 responses above trigger a redirect.
       }
     })();
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []);
 }

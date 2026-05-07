@@ -32,7 +32,6 @@ export async function savePrivateKey(db: IDBDatabase | null, username: string, c
     return;
   }
 
-  // Fallback: sessionStorage only (never plain localStorage for private key)
   const b64 = btoa(String.fromCharCode(...new Uint8Array(exported)));
   sessionStorage.setItem(`pwk_${username}`, b64);
 }
@@ -48,7 +47,6 @@ export async function loadPrivateKey(db: IDBDatabase | null, username: string): 
       });
       if (result) return await importPrivateKey(result.key);
     } catch {
-      // fall through to sessionStorage
     }
   }
 

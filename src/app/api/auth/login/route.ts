@@ -23,18 +23,16 @@ export async function POST(req: NextRequest) {
   }
 
   const res = NextResponse.json({
-    // Return everything EXCEPT the token — client gets user info but NOT the raw token
     user_id: data.user_id || data.id || null,
     username: body.username,
   });
 
-  // Set token in HttpOnly cookie — JS cannot read this
   res.cookies.set('wb_token', token, {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'strict',
     path: '/',
-    maxAge: 60 * 60 * 24 * 7, // 7 days
+    maxAge: 60 * 60 * 24 * 7,
   });
 
   return res;

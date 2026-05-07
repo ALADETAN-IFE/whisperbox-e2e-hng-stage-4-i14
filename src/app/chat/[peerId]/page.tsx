@@ -8,11 +8,8 @@ export default function ChatPeerPage({ params }: { params: Promise<{ peerId: str
   const { peerId } = use(params);
   const { state, dispatch } = useAppState();
 
-  // If the user navigated here directly (e.g. typed URL or reloaded),
-  // activePeer may not be set yet — restore it from the conversations list
-  // or create a minimal placeholder so ChatArea can load messages immediately.
   useEffect(() => {
-    if (state.activeConvoId === peerId) return; // already set
+    if (state.activeConvoId === peerId) return;
 
     const existing = state.conversations.find((c) => c.user_id === peerId);
     dispatch({

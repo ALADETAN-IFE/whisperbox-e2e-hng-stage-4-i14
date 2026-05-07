@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="420" viewBox="0 0 900 420">
+  <style>
+    .box { fill:#f8fafc; stroke:#0f172a; stroke-width:1; }
+    .label { font: 14px 'Segoe UI', Roboto, sans-serif; fill:#0f172a; }
+    .small { font:12px; fill:#0f172a; }
+    .arrow { stroke:#0f172a; stroke-width:2; fill:none; marker-end:url(#arrowhead);} 
+  </style>
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#0f172a" />
+    </marker>
+  </defs>
+  <rect x="40" y="30" width="220" height="120" rx="8" class="box"/>
+  <text x="150" y="55" text-anchor="middle" class="label">Client (Browser)</text>
+  <text x="150" y="75" text-anchor="middle" class="small">Next.js + React</text>
+  <text x="150" y="95" text-anchor="middle" class="small">Web Crypto / IndexedDB</text>
+
+  <rect x="340" y="30" width="220" height="120" rx="8" class="box"/>
+  <text x="450" y="55" text-anchor="middle" class="label">API Proxy</text>
+  <text x="450" y="85" text-anchor="middle" class="small">/api/proxy → WhisperBox</text>
+
+  <rect x="640" y="30" width="220" height="120" rx="8" class="box"/>
+  <text x="750" y="55" text-anchor="middle" class="label">WhisperBox Backend</text>
+  <text x="750" y="85" text-anchor="middle" class="small">REST + WebSocket (presence)</text>
+
+  <rect x="40" y="190" width="220" height="140" rx="8" class="box"/>
+  <text x="150" y="215" text-anchor="middle" class="label">Local Storage</text>
+  <text x="150" y="235" text-anchor="middle" class="small">IndexedDB (wrapped private key)</text>
+
+  <rect x="640" y="190" width="220" height="140" rx="8" class="box"/>
+  <text x="750" y="215" text-anchor="middle" class="label">Peer Clients</text>
+  <text x="750" y="235" text-anchor="middle" class="small">Receive encrypted messages</text>
+
+  <path d="M260 90 L340 90" class="arrow"/>
+  <text x="300" y="82" class="small" text-anchor="middle">HTTPS</text>
+
+  <path d="M560 90 L640 90" class="arrow"/>
+  <text x="600" y="82" class="small" text-anchor="middle">HTTPS</text>
+
+  <path d="M190 150 L190 190" class="arrow"/>
+  <text x="200" y="170" class="small">save/load wrapped key</text>
+
+  <path d="M750 150 L750 190" class="arrow"/>
+  <text x="780" y="170" class="small">deliver encrypted payloads</text>
+
+  <path d="M260 240 L340 240" class="arrow"/>
+  <text x="300" y="232" class="small">WS (presence)</text>
+
+  <path d="M560 240 L640 240" class="arrow"/>
+  <text x="600" y="232" class="small">WS (presence)</text>
+</svg>

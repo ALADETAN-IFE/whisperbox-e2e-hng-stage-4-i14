@@ -36,7 +36,7 @@ export default function NewChatModal({ onClose, onSelect }: NewChatModalProps) {
         `/api/proxy?path=${encodeURIComponent(`/users/search?q=${encodeURIComponent(q)}`)}`,
       );
       const data = await res.json();
-      console.log("[user search raw]", data); // temp: inspect API shape
+      
       setResults(Array.isArray(data) ? data : (data.users ?? []));
     } catch {
       setResults([]);
@@ -83,7 +83,7 @@ export default function NewChatModal({ onClose, onSelect }: NewChatModalProps) {
       onClick={(e) => e.target === e.currentTarget && onClose()}
     >
       <div className="bg-[#1c1c1c] w-100 rounded-xl overflow-hidden shadow-2xl">
-        {/* Header */}
+        
         <div className="flex items-center justify-between px-4 py-4 border-b border-white/8">
           <span className="text-[18px] font-semibold">New Message</span>
           <button
@@ -94,7 +94,7 @@ export default function NewChatModal({ onClose, onSelect }: NewChatModalProps) {
           </button>
         </div>
 
-        {/* Search input */}
+        
         <div className="px-4 py-3 relative flex items-center gap-2">
           <Search size={16} className="text-[#707579] absolute left-7" />
           <input
@@ -107,7 +107,7 @@ export default function NewChatModal({ onClose, onSelect }: NewChatModalProps) {
           />
         </div>
 
-        {/* Results */}
+        
         <div className="max-h-100 overflow-y-auto pb-2">
           {loading && (
             <div className="py-8 text-center text-sm text-[#707579]">

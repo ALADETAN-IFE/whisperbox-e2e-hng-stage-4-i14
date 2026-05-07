@@ -8,13 +8,6 @@ export class ApiError extends Error {
   }
 }
 
-/**
- * Client-side API calls to the WhisperBox backend.
- * The token is never read from JS — it is forwarded by our Next.js
- * /api/proxy route which reads the HttpOnly cookie server-side.
- *
- * For calls that must go direct (e.g., during SSR or testing), pass token explicitly.
- */
 export async function apiRequest<T = unknown>(
   path: string,
   options: RequestInit & { token?: string } = {}
@@ -40,10 +33,6 @@ export async function apiRequest<T = unknown>(
   return res.json() as Promise<T>;
 }
 
-/**
- * Client-side wrapper that routes through our Next.js proxy so the
- * real API token stays in an HttpOnly cookie and is never accessible to JS.
- */
 export async function api<T = unknown>(
   path: string,
   options: RequestInit = {}

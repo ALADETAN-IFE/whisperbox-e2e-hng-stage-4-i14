@@ -23,10 +23,8 @@ export default function ChatLayout({
   const [needsUnlock, setNeedsUnlock] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
-  // ── Auth restore hook ─────────────────────────────────────────────────
   useAuthRestore(setAuthChecked, setNeedsUnlock);
 
-  // ── Unlock hook ───────────────────────────────────────────────────────
   const {
     unlockPassword,
     setUnlockPassword,
@@ -35,10 +33,6 @@ export default function ChatLayout({
     handleUnlock,
   } = useUnlock(needsUnlock, setNeedsUnlock);
 
-  // ── Load conversations + poll ─────────────────────────────────────────
-  // IMPORTANT: do NOT put state.activeConvoId / state.activePeer in deps —
-  // those change on every message load and would recreate this fn + restart
-  // the interval on every poll, causing an infinite loop.
   const loadConversations = useCallback(async () => {
     try {
       const res = await fetch(
@@ -50,17 +44,15 @@ export default function ChatLayout({
         return;
       }
 
-      if (!res.ok) return; // transient server error — skip silently, do not redirect
+      if (!res.ok) return;
 
       const data = await res.json();
       const convos: Conversation[] = Array.isArray(data)
         ? data
         : (data.conversations ?? []);
       dispatch({ type: "SET_CONVERSATIONS", conversations: convos });
-    } catch {
-      /* network error — non-fatal, will retry on next interval */
-    }
-  }, [dispatch, router]); // ← no state deps here
+    } catch {}
+  }, [dispatch, router]);
 
   useEffect(() => {
     if (!authChecked || needsUnlock) return;
@@ -69,7 +61,6 @@ export default function ChatLayout({
     return () => clearInterval(id);
   }, [authChecked, needsUnlock, loadConversations]);
 
-  // ── WebSocket presence listener ───────────────────────────────────────
   useEffect(() => {
     if (!authChecked || needsUnlock) return;
     let ws: WebSocket | null = null;
@@ -87,18 +78,14 @@ export default function ChatLayout({
                 last_seen: msg.last_seen ?? null,
               });
             }
-          } catch {
-            /* ignore non-json */
-          }
+          } catch {}
         };
         ws.onerror = () => {
           try {
             ws?.close();
           } catch {}
         };
-      } catch {
-        /* ignore */
-      }
+      } catch {}
     };
     tryConnect();
     return () => {
@@ -108,7 +95,6 @@ export default function ChatLayout({
     };
   }, [authChecked, needsUnlock, dispatch]);
 
-  // ── Select conversation → resolve name + navigate ─────────────────────
   async function handleSelectConvo(peerId: string, initialPeer?: Conversation) {
     const existing = state.conversations.find((c) => c.user_id === peerId);
     let peer: Conversation =
@@ -158,7 +144,6 @@ export default function ChatLayout({
     router.push(`/chat/${peerId}`);
   }
 
-  // ── Unlock overlay ────────────────────────────────────────────────────
   if (needsUnlock) {
     return (
       <UnlockOverlay

@@ -35,7 +35,7 @@ export function useUnlock(
       const privateKey = await unwrapPrivateKey(user.wrapped_private_key, wrappingKey);
       let publicKey = state.publicKey;
       if (!publicKey && user.public_key) {
-        try { publicKey = await ipk(user.public_key); } catch { /* ok */ }
+        try { publicKey = await ipk(user.public_key); } catch {}
       }
       const db = state.db ?? await openKeyDB();
       if (!state.db) dispatch({ type: 'SET_DB', db });

@@ -62,9 +62,7 @@ function extractPayload(msg: Message): MessagePayload | null {
     try {
       const p = JSON.parse(raw) as MessagePayload;
       if (p.ciphertext) return p;
-    } catch {
-      /* ok */
-    }
+    } catch {}
   }
   return null;
 }
@@ -88,11 +86,11 @@ async function decryptOne(
 }
 
 type DecryptedMessage = {
-  id: string; // stable key – real msg id or optimistic uuid
+  id: string;
   text: string;
   isSent: boolean;
   ts: Date;
-  optimistic?: boolean; // true while not yet confirmed by server
+  optimistic?: boolean;
 };
 
 export default function ChatArea() {
@@ -152,7 +150,6 @@ export default function ChatArea() {
           }),
         );
 
-        // Update sidebar preview with the most recent message only
         if (activeConvoId && decoded.length > 0) {
           const last = decoded[decoded.length - 1];
           dispatch({
@@ -162,12 +159,10 @@ export default function ChatArea() {
           });
         }
 
-        // Sort ascending by timestamp — oldest at top, newest at bottom
         const sorted = [...decoded].sort(
           (a, b) => a.ts.getTime() - b.ts.getTime(),
         );
 
-        // Replace server messages but keep any still-pending optimistic ones
         setMessages((prev) => {
           const optimisticOnly = prev.filter((m) => m.optimistic);
           const stillPending = optimisticOnly.filter(
@@ -208,7 +203,6 @@ export default function ChatArea() {
     };
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Fetch peer profile once if name or presence is missing
   useEffect(() => {
     if (!activeConvoId) return;
     const hasName = !!(activePeer?.display_name || activePeer?.username);
@@ -263,11 +257,9 @@ export default function ChatArea() {
       }
     }
 
-    // Clear input immediately
     setInputText("");
     if (textareaRef.current) textareaRef.current.style.height = "";
 
-    // Add optimistic message instantly
     const optimisticId = `opt-${Date.now()}-${Math.random()}`;
     const optimisticMsg: DecryptedMessage = {
       id: optimisticId,
@@ -298,7 +290,6 @@ export default function ChatArea() {
         body: JSON.stringify({ to: activeConvoId, payload }),
       });
 
-      // Confirm: remove optimistic flag after server ack
       setMessages((prev) =>
         prev.map((m) =>
           m.id === optimisticId ? { ...m, optimistic: false } : m,
@@ -308,7 +299,6 @@ export default function ChatArea() {
       lastCountRef.current = 0;
       await loadMessages(true);
     } catch (e) {
-      // Remove optimistic message and restore input text on failure
       setMessages((prev) => prev.filter((m) => m.id !== optimisticId));
       setInputText(text);
       showToast("Send failed: " + (e as Error).message, "error");
@@ -349,8 +339,7 @@ export default function ChatArea() {
 
   const peerName =
     activePeer?.display_name ?? activePeer?.username ?? "Loading...";
-  // last_message_at is when *we* last exchanged a message — NOT the peer's presence.
-  // Only use actual presence fields (last_seen / last_active) for the "Last seen" label.
+
   const rawPresence = activePeer?.online
     ? "online"
     : (activePeer?.last_seen ?? activePeer?.last_active ?? null);
@@ -362,7 +351,6 @@ export default function ChatArea() {
         : "End-to-End Encrypted";
   const initial = peerName[0]?.toUpperCase() ?? "?";
 
-  // Build list items with date separators injected
   const itemsWithSeparators = buildItemsWithSeparators(messages);
 
   return (
@@ -374,7 +362,6 @@ export default function ChatArea() {
         }}
       />
 
-      {/* Header */}
       <div className="h-14 bg-[#1c1c1c] border-b border-white/8 flex items-center justify-between px-4 z-10 shrink-0">
         <div className="flex items-center gap-3">
           <div className="w-9 h-9 rounded-full bg-[#2b5278] flex items-center justify-center text-sm font-semibold">
@@ -395,7 +382,6 @@ export default function ChatArea() {
         </button>
       </div>
 
-      {/* Messages */}
       <div
         ref={containerRef}
         className="flex-1 overflow-y-auto px-4 py-4 flex flex-col gap-2 z-5"
@@ -426,7 +412,6 @@ export default function ChatArea() {
         )}
       </div>
 
-      {/* Input */}
       <div className="px-4 pb-5 pt-2.5 z-10 shrink-0">
         <div className="bg-[#1c1c1c] rounded-xl flex items-end gap-3 px-3 py-2">
           <button className="text-[#707579] hover:text-white transition-colors p-1 shrink-0">
@@ -460,8 +445,6 @@ export default function ChatArea() {
     </div>
   );
 }
-
-// ── Helpers ──────────────────────────────────────────────────────────────────
 
 type SeparatorItem = { type: "separator"; key: string; label: string };
 type MessageItem = { type: "message"; msg: DecryptedMessage };

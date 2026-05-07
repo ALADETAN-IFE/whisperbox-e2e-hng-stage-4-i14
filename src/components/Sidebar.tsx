@@ -126,7 +126,7 @@ export default function Sidebar({
       </div>
 
       
-      <div className="flex gap-5 px-4 pb-0.5 border-b border-white/8">
+      {/* <div className="flex gap-5 px-4 pb-0.5 border-b border-white/8">
         {["All", "Private", "Groups"].map((t) => (
           <button
             key={t}
@@ -139,7 +139,7 @@ export default function Sidebar({
             )}
           </button>
         ))}
-      </div>
+      </div> */}
 
       
       <div className="flex-1 overflow-y-auto">

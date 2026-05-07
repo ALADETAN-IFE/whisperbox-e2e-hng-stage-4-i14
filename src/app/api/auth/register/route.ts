@@ -12,5 +12,27 @@ export async function POST(req: NextRequest) {
   });
 
   const data = await upstream.json().catch(() => ({}));
-  return NextResponse.json(data, { status: upstream.status });
+
+  if (!upstream.ok) {
+    return NextResponse.json(data, { status: upstream.status });
+  }
+
+  const token = data.access_token || data.token;
+  const res = NextResponse.json({
+    user_id: data.user_id || data.id || null,
+    username: body.username,
+    token_set: !!token,
+  });
+
+  if (token) {
+    res.cookies.set('wb_token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      path: '/',
+      maxAge: 60 * 60 * 24 * 7,
+    });
+  }
+
+  return res;
 }

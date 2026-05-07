@@ -179,7 +179,7 @@ WebSocket connection at `wss://whisperbox.koyeb.app/ws` for presence updates.
 
 ## Demo / Submission
 
-Live demo: https://whisperbox-e2ee-green.vercel.app
+Live demo: https://whisperbox-e2e.vercel.app
 
 Backend API: https://whisperbox.koyeb.app
 

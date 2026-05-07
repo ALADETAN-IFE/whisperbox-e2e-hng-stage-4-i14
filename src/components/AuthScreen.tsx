@@ -146,18 +146,22 @@ export default function AuthScreen() {
           regData.detail || regData.message || "Registration failed",
         );
 
-      await sleep(500);
 
-      const loginRes = await fetch("/api/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username: regUsername, password: regPassword }),
-      });
-      const loginData = await loginRes.json();
-      if (!loginRes.ok)
-        throw new Error(loginData.detail || "Login after register failed");
+      let userId = regData.user_id;
+      if (!regData.token_set) {
+        await sleep(500);
+        const loginRes = await fetch("/api/auth/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username: regUsername, password: regPassword }),
+        });
+        const loginData = await loginRes.json();
+        if (!loginRes.ok)
+          throw new Error(loginData.detail || "Login after register failed");
+        userId = loginData.user_id;
+      }
 
-      const user: User = { id: loginData.user_id, username: regUsername };
+      const user: User = { id: userId, username: regUsername };
       dispatch({ type: "SET_USER", user });
       sessionStorage.setItem("wb_user", regUsername);
       await afterLogin(user, regPassword);

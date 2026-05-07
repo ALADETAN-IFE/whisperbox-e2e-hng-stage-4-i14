@@ -172,9 +172,6 @@ export default function Sidebar({
           </div>
           <div className="flex-1 min-w-0">
             <div className="text-[13px] font-semibold truncate">{userName}</div>
-            <div className="text-[11px] text-[#3390ec]">
-              🔐 keys secured locally
-            </div>
           </div>
           <button
             onClick={handleLogout}

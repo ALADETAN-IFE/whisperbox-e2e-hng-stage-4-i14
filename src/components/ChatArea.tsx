@@ -42,6 +42,25 @@ async function fetchPeerPublicKey(peerId: string): Promise<string | null> {
 }
 
 async function fetchPeerProfile(peerId: string): Promise<Conversation | null> {
+  // Try /conversations first — it reliably has display_name + username
+  try {
+    const res = await fetch(
+      `/api/proxy?path=${encodeURIComponent("/conversations")}`,
+    );
+    if (res.ok) {
+      const data = (await res.json()) as
+        | Conversation[]
+        | { conversations?: Conversation[] };
+      const list: Conversation[] = Array.isArray(data)
+        ? data
+        : (data.conversations ?? []);
+      const found = list.find((c) => c.user_id === peerId);
+      if (found?.display_name || found?.username) return found;
+    }
+  } catch {
+    /* fall through */
+  }
+  // Fallback: individual user profile endpoint
   try {
     const res = await fetch(
       `/api/proxy?path=${encodeURIComponent(`/users/${peerId}`)}`,
@@ -337,8 +356,7 @@ export default function ChatArea() {
     );
   }
 
-  const peerName =
-    activePeer?.display_name ?? activePeer?.username ?? "Loading...";
+  const peerName = activePeer?.display_name ?? activePeer?.username ?? "";
 
   const rawPresence = activePeer?.online
     ? "online"

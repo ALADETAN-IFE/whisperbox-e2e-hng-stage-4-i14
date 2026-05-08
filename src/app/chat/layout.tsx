@@ -142,7 +142,7 @@ export default function ChatLayout({
 
     dispatch({ type: "SET_ACTIVE_CONVO", peerId, peer });
     router.push(`/chat/${peerId}`);
-    setSidebarCollapsed(true)
+    setSidebarCollapsed(true);
   }
 
   if (needsUnlock) {

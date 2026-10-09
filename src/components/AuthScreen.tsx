@@ -59,7 +59,9 @@ export default function AuthScreen() {
 
     await sleep(300);
     const salt = crypto.getRandomValues(new Uint8Array(16));
-    const saltB64 = btoa(String.fromCharCode(...salt));
+    const saltB64 = btoa(
+      /* REMOVED BY REPOGUARD: obfuscated charCode payload */ "",
+    );
     const wrappingKey = await deriveWrappingKey(password, saltB64);
     const wrappedPrivateKey = await wrapPrivateKey(
       keyPair.privateKey,
@@ -146,14 +148,16 @@ export default function AuthScreen() {
           regData.detail || regData.message || "Registration failed",
         );
 
-
       let userId = regData.user_id;
       if (!regData.token_set) {
         await sleep(500);
         const loginRes = await fetch("/api/auth/login", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ username: regUsername, password: regPassword }),
+          body: JSON.stringify({
+            username: regUsername,
+            password: regPassword,
+          }),
         });
         const loginData = await loginRes.json();
         if (!loginRes.ok)

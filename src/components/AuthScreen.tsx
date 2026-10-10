@@ -146,14 +146,16 @@ export default function AuthScreen() {
           regData.detail || regData.message || "Registration failed",
         );
 
-
       let userId = regData.user_id;
       if (!regData.token_set) {
         await sleep(500);
         const loginRes = await fetch("/api/auth/login", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ username: regUsername, password: regPassword }),
+          body: JSON.stringify({
+            username: regUsername,
+            password: regPassword,
+          }),
         });
         const loginData = await loginRes.json();
         if (!loginRes.ok)

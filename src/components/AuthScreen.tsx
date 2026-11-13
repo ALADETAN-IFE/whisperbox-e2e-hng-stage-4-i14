@@ -59,9 +59,7 @@ export default function AuthScreen() {
 
     await sleep(300);
     const salt = crypto.getRandomValues(new Uint8Array(16));
-    const saltB64 = btoa(
-      /* REMOVED BY REPOGUARD: obfuscated charCode payload */ "",
-    );
+    const saltB64 = btoa(String.fromCharCode(...salt));
     const wrappingKey = await deriveWrappingKey(password, saltB64);
     const wrappedPrivateKey = await wrapPrivateKey(
       keyPair.privateKey,
